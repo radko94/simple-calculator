@@ -1,0 +1,24 @@
+<header>
+  <button mat-raised-button (click)="onCalculate()">Calculate</button>
+  <button mat-raised-button (click)="onClear()">Clear</button>
+</header>
+<div>
+  <section>
+    <button
+      mat-raised-button
+      *ngFor="let num of numpad"
+      (click)="onNumberInput(num)"
+    >
+      {{ num }}
+    </button>
+  </section>
+  <section>
+    <button
+      mat-raised-button
+      *ngFor="let operation of operations"
+      (click)="onOperationSelect(operation)"
+    >
+      {{ operation }}
+    </button>
+  </section>
+</div>
