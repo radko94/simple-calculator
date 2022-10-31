@@ -1,27 +1,25 @@
-# Calculator
+# Hello there
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.7.
+This is an simple calculator app build with Angular 14.
 
-## Development server
+## What is used here
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+* Lazy loading => used to load the calculator.module
 
-## Code scaffolding
+* ngrx/store and ngrx/effects => to manage the the state of the app and manage the side effects / logic around each operation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* NestJS backend => to compute the expression result
 
-## Build
+## How to run the app
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+git clone git@github.com:radko94/simple-calculator.git && cd calculator && npm i && ng serve
+```
 
-## Running unit tests
+or
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+git clone https://github.com/radko94/simple-calculator.git && cd calculator && npm i && ng serve
+```
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Then you need to go to https://github.com/radko94/simple-calculator-be to download and run the backend
