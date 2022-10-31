@@ -32,7 +32,7 @@ export class CalculatorEffects {
 
         if (this._shouldClearSequence) {
           this._store.dispatch(fromActions.clearExpression());
-          nextVal = defaultNextValue
+          nextVal = defaultNextValue;
         }
 
         if (action.payload.nextValue === Operations.minusPlusSign) {
@@ -54,10 +54,28 @@ export class CalculatorEffects {
               : `${nextValue}${action.payload.nextValue}`;
         }
 
-        this._shouldClearSequence = false
+        this._shouldClearSequence = false;
 
         return fromActions.nextValueChangeSuccess({
           payload: { nextValue: nextVal },
+        });
+      })
+    )
+  );
+
+  public selectOperation$ = createEffect(() =>
+    this._actions.pipe(
+      ofType<ReturnType<typeof fromActions.selectOperation>>(
+        fromActions.selectOperation
+      ),
+      map((action) => {
+        if (this._shouldClearSequence) {
+          this._store.dispatch(fromActions.clearExpression());
+          this._shouldClearSequence = false;
+        }
+
+        return fromActions.selectOperationSuccess({
+          payload: { operation: action.payload.operation },
         });
       })
     )
@@ -69,12 +87,24 @@ export class CalculatorEffects {
         fromActions.calculateExpressionSequence
       ),
       withLatestFrom(
-        this._store.select(fromSelectors.selectExpressionSequence)
+        this._store.select(fromSelectors.selectExpressionSequence),
+        this._store.select(fromSelectors.selectNextValue)
       ),
-      switchMap(([action, expressionSequence]) =>
-        this._calculatorService.calculateExpression(expressionSequence).pipe(
+      map(([action, expressionSequence, nextValue]) => {
+        console.warn(expressionSequence, nextValue)
+
+        return ({nextValue, expressionSequence})
+      }),
+      switchMap((x) =>
+        this._calculatorService.calculateExpression(x.expressionSequence).pipe(
           map((result) => {
             this._shouldClearSequence = true;
+
+            if (!Boolean(x.expressionSequence) && x.nextValue === defaultNextValue) {
+                return fromActions.calculateExpressionSequenceError({
+                  payload: { errorMessage: 'something went wrong' },
+                })
+            }
 
             return fromActions.calculateExpressionSequenceSuccess({
               payload: { result },

@@ -9,6 +9,10 @@ export const nextValueChangeSuccess = createAction(
   props<{ payload: { nextValue: string } }>()
 );
 
+export const selectOperation = createAction(
+  '[CALCULATOR] SELECT_OPERATION',
+  props<{ payload: { operation: string } }>()
+);
 export const selectOperationSuccess = createAction(
   '[CALCULATOR] SELECT_OPERATION_SUCCESS',
   props<{ payload: { operation: string } }>()
@@ -27,3 +31,4 @@ export const calculateExpressionSequenceError = createAction(
 );
 
 export const clearExpression = createAction('[CALCULATOR] CLEAR_EXPRESSION');
+export const clearNextValue = createAction('[CALCULATOR] CLEAR_NEXT_VALUE');

@@ -11,13 +11,24 @@ export const calculatorReducer = createReducer(
   })),
   on(fromActions.selectOperationSuccess, (state, action) => ({
     ...state,
-    expressionSequence: `${state.expressionSequence ? state.expressionSequence : ''}${state.nextValue} ${action.payload.operation} `,
+    expressionSequence: `${
+      state.expressionSequence ? state.expressionSequence : ''
+    }${state.nextValue} ${action.payload.operation} `,
     nextValue: defaultNextValue,
   })),
-  on(fromActions.calculateExpressionSequence, (state, action) => ({
-    ...state,
-    expressionSequence: `${state.expressionSequence}${state.nextValue}`
-  })),
+  on(fromActions.calculateExpressionSequence, (state, action) => {
+    if (
+      !Boolean(state.expressionSequence) ||
+      state.nextValue === defaultNextValue
+    ) {
+      return state;
+    }
+
+    return {
+      ...state,
+      expressionSequence: `${state.expressionSequence}${state.nextValue}`,
+    };
+  }),
   on(fromActions.calculateExpressionSequenceSuccess, (state, action) => ({
     ...state,
     nextValue: action.payload.result,
@@ -25,10 +36,9 @@ export const calculatorReducer = createReducer(
   on(fromActions.clearExpression, (state, action) => ({
     ...state,
     expressionSequence: undefined,
-    nextValue: '0',
   })),
-  on(fromActions.clearExpression, (state, action) => ({
+  on(fromActions.clearNextValue, (state, action) => ({
     ...state,
-    expressionSequence: undefined
-  })),
+    nextValue: defaultNextValue,
+  }))
 );

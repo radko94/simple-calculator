@@ -16,12 +16,14 @@ export class CalculatorStoreFacadeService {
         ),
       selectOperator: (operation: string) =>
         this._store.dispatch(
-          fromActions.selectOperationSuccess({ payload: { operation } })
+          fromActions.selectOperation({ payload: { operation } })
         ),
       calculateExpression: () =>
         this._store.dispatch(fromActions.calculateExpressionSequence()),
       clearExpression: () =>
         this._store.dispatch(fromActions.clearExpression()),
+      clearNextValue: () =>
+        this._store.dispatch(fromActions.clearNextValue()),
     };
   }
 

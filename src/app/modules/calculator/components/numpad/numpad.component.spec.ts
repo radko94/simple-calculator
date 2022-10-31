@@ -19,27 +19,21 @@ describe('NumpadComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NumpadComponent],
-      providers: [{
-        provide: CalculatorStoreFacadeService,
-        useValue: {
-          actions: {
-            nextValueChange: () => console.warn('here'),
-            clearExpression: () => console.warn('here'),
-            calculateExpression: () => console.warn('here'),
-            selectOperator: () => console.warn('here'),
-          }
-        }
-      }],
-      // providers: [CalculatorStoreFacadeService],
-      imports: [
-        StoreModule.forRoot({}, {}),
-        // MatTabsModule,
-        // MatToolbarModule,
-        // MatIconModule,
-        // MatButtonModule,
-        // MatCardModule,
-        // RouterTestingModule,
+      providers: [
+        {
+          provide: CalculatorStoreFacadeService,
+          useValue: {
+            actions: {
+              nextValueChange: () => console.warn('here'),
+              clearExpression: () => console.warn('here'),
+              calculateExpression: () => console.warn('here'),
+              selectOperator: () => console.warn('here'),
+              clearNextValue: () => console.warn('here'),
+            },
+          },
+        },
       ],
+      imports: [StoreModule.forRoot({}, {})],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NumpadComponent);
@@ -75,7 +69,6 @@ describe('NumpadComponent', () => {
     expect(nextValueChangeSpy).toHaveBeenCalledTimes(1);
     expect(nextValueChangeSpy).toHaveBeenCalledWith('1');
   });
-
 
   it('onClear should call clearExpression', () => {
     const calculatorStoreFacadeService = TestBed.inject(

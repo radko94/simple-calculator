@@ -34,5 +34,6 @@ export class NumpadComponent implements OnInit {
 
   public onClear(): void {
     this._calculatorStoreFacade.actions.clearExpression();
+    this._calculatorStoreFacade.actions.clearNextValue();
   }
 }
