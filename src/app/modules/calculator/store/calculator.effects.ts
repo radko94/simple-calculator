@@ -1,8 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Operations } from '@appModule/variables/global.variables';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { BackendResponseErrorMessages } from '@appModule/variables/backend.variables';
+import { Operations, Snackbar } from '@appModule/variables/global.variables';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  map,
+  of,
+  switchMap,
+  throwError,
+  withLatestFrom,
+} from 'rxjs';
 import { CalculatorService } from '../calculator.service';
 
 import * as fromActions from './calculator.actions';
@@ -16,6 +25,7 @@ export class CalculatorEffects {
   public constructor(
     private readonly _store: Store,
     private readonly _actions: Actions,
+    private readonly _snackBar: MatSnackBar,
     private readonly _calculatorService: CalculatorService
   ) {
     this._shouldClearSequence = false;
@@ -90,35 +100,48 @@ export class CalculatorEffects {
         this._store.select(fromSelectors.selectExpressionSequence),
         this._store.select(fromSelectors.selectNextValue)
       ),
-      map(([action, expressionSequence, nextValue]) => {
-        console.warn(expressionSequence, nextValue)
+      switchMap(([action, expressionSequence, nextValue]) => {
+        if (!Boolean(expressionSequence) || nextValue === defaultNextValue) {
+          this._snackBar.open(
+            Snackbar.emptyExpressionString,
+            Snackbar.fillExpressionStringAction
+          );
 
-        return ({nextValue, expressionSequence})
-      }),
-      switchMap((x) =>
-        this._calculatorService.calculateExpression(x.expressionSequence).pipe(
-          map((result) => {
-            this._shouldClearSequence = true;
+          return throwError(() => Snackbar.emptyExpressionString);
+        }
 
-            if (!Boolean(x.expressionSequence) && x.nextValue === defaultNextValue) {
+        return this._calculatorService
+          .calculateExpression(expressionSequence + nextValue)
+          .pipe(
+            map((result) => {
+              this._shouldClearSequence = true;
+
+              if (
+                !Boolean(expressionSequence) &&
+                nextValue === defaultNextValue
+              ) {
                 return fromActions.calculateExpressionSequenceError({
-                  payload: { errorMessage: 'something went wrong' },
-                })
-            }
+                  payload: {
+                    errorMessage: BackendResponseErrorMessages.default,
+                  },
+                });
+              }
 
-            return fromActions.calculateExpressionSequenceSuccess({
-              payload: { result },
-            });
-          }),
-          catchError((err) =>
-            of(
-              fromActions.calculateExpressionSequenceError({
-                payload: { errorMessage: 'something went wrong' },
-              })
-            )
-          )
-        )
-      )
+              return fromActions.calculateExpressionSequenceSuccess({
+                payload: { result },
+              });
+            }),
+            catchError((error: string) => {
+              this._snackBar.open(error, Snackbar.action);
+
+              return of(
+                fromActions.calculateExpressionSequenceError({
+                  payload: { errorMessage: error },
+                })
+              );
+            })
+          );
+      }),
     )
   );
 }

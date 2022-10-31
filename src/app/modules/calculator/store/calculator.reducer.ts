@@ -16,22 +16,10 @@ export const calculatorReducer = createReducer(
     }${state.nextValue} ${action.payload.operation} `,
     nextValue: defaultNextValue,
   })),
-  on(fromActions.calculateExpressionSequence, (state, action) => {
-    if (
-      !Boolean(state.expressionSequence) ||
-      state.nextValue === defaultNextValue
-    ) {
-      return state;
-    }
-
-    return {
-      ...state,
-      expressionSequence: `${state.expressionSequence}${state.nextValue}`,
-    };
-  }),
   on(fromActions.calculateExpressionSequenceSuccess, (state, action) => ({
     ...state,
     nextValue: action.payload.result,
+    expressionSequence: `${state.expressionSequence}${state.nextValue}`
   })),
   on(fromActions.clearExpression, (state, action) => ({
     ...state,
