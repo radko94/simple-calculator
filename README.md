@@ -4,11 +4,11 @@ This is an simple calculator app build with Angular 14.
 
 ## What is used here
 
-* Lazy loading => used to load the calculator.module
+- Lazy loading => used to load the calculator.module
 
-* ngrx/store and ngrx/effects => to manage the the state of the app and manage the side effects / logic around each operation
+- ngrx/store and ngrx/effects => to manage the the state of the app and manage the side effects / logic around each operation
 
-* NestJS backend => to compute the expression result
+- NestJS backend => to compute the expression result
 
 ## How to run the app
 
@@ -23,3 +23,8 @@ git clone https://github.com/radko94/simple-calculator.git && cd calculator && n
 ```
 
 Then you need to go to https://github.com/radko94/simple-calculator-be to download and run the backend
+
+# Demo
+
+![Alt Text](https://giphy.com/gifs/4x4AvpmXJ4UDhv3zzF)
+![Alt Text](https://giphy.com/gifs/5zLsG7oyg0BtPgeCSZ)
