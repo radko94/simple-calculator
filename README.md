@@ -26,5 +26,5 @@ Then you need to go to https://github.com/radko94/simple-calculator-be to downlo
 
 # Demo
 
-![Alt Text](https://giphy.com/gifs/4x4AvpmXJ4UDhv3zzF)
-![Alt Text](https://giphy.com/gifs/5zLsG7oyg0BtPgeCSZ)
+![Alt Text](https://media.giphy.com/media/5zLsG7oyg0BtPgeCSZ/giphy.gif)
+![Alt Text](https://media.giphy.com/media/4x4AvpmXJ4UDhv3zzF/giphy.gif)
