@@ -27,7 +27,7 @@ export class CalculatorStoreFacadeService {
 
   public get selectors() {
     return {
-      evaluationSequense$: this._store.select(
+      evaluationSequence$: this._store.select(
         fromSelectors.selectExpressionSequence
       ),
       nextValue$: this._store.select(fromSelectors.selectNextValue),
