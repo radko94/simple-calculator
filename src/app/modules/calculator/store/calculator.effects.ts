@@ -110,6 +110,10 @@ export class CalculatorEffects {
           return throwError(() => Snackbar.emptyExpressionString);
         }
 
+        if (this._shouldClearSequence) {
+          return throwError(() => Snackbar.shouldNotTriggerCalculate);
+        }
+
         return this._calculatorService
           .calculateExpression(expressionSequence + nextValue)
           .pipe(
@@ -141,7 +145,7 @@ export class CalculatorEffects {
               );
             })
           );
-      }),
+      })
     )
   );
 }

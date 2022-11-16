@@ -8,6 +8,7 @@ export enum Operations {
 }
 
 export enum Snackbar {
+  shouldNotTriggerCalculate = 'Expression already calculated!',
   emptyExpressionString = 'You must choose and expression to evaluate.',
   fillExpressionStringAction = 'Ok, I am going to fill it up.',
   action = 'Ok.',

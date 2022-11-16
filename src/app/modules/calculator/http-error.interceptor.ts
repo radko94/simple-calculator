@@ -20,13 +20,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.warn(request);
-    return next.handle(request).pipe(
-      catchError((error) => {
-        console.warn(error);
-        return this._handleError(error);
-      })
-    );
+    return next
+      .handle(request)
+      .pipe(catchError((error) => this._handleError(error)));
   }
 
   private _handleError(request: HttpErrorResponse): Observable<never> {
